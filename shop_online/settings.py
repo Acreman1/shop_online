@@ -47,18 +47,46 @@ INSTALLED_APPS = [
     'xadmin',
     'reversion',
     'crispy_forms',
-    # 'django_filters',
+    'django_filters',
     'DjangoUeditor',
+    'coreschema',
+    'corsheaders',
+    'rest_framework.authtoken',
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 3,
+    # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+            'rest_framework.authentication.BasicAuthentication',
+            'rest_framework.authentication.SessionAuthentication',
+            # 'rest_framework.authentication.TokenAuthentication',
+            # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        ]
 }
+
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
+
+import datetime
+# 登录过期时间
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
+# 手机号码正则表达式
+REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
+# 云片网 api_key
+APIKEY = 'd961c94e9187f63af6dc77aa8f4232f6'
 
 AUTH_USER_MODEL = 'users.UserProfile'
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
