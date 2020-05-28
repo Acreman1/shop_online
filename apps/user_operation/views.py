@@ -9,6 +9,8 @@ from rest_framework.authentication import SessionAuthentication
 
 
 class UserFavViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.DestroyModelMixin, mixins.CreateModelMixin):
+    from .models import User
+    print(User)
     """
     list：
         用户收藏列表

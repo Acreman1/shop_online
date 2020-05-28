@@ -12,7 +12,7 @@ from rest_framework.authtoken import views
 from rest_framework_jwt.views import obtain_jwt_token
 from users.views import SmsCodeViewset,UserViewSet
 from user_operation.views import UserFavViewSet,LeavingMessageViewset,AddressViewSet
-from trade.views import ShoppingCartViewSet,OrderViewSet
+from trade.views import ShoppingCartViewSet,OrderViewSet,AlipayView
 
 router = DefaultRouter()
 
@@ -50,5 +50,7 @@ urlpatterns = [
     path('api-token-auth',views.obtain_auth_token),
     path('login/',obtain_jwt_token),
     path('docs/',include_docs_urls(title='DRF文档')),
-    path('schema/',schema_view)
+    path('schema/',schema_view),
+    path('alipay/return/',AlipayView.as_view()),
+    path('',include('social_django.urls',namespace='social'))
 ]

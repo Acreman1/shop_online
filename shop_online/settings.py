@@ -27,7 +27,7 @@ SECRET_KEY = '!lib5-+r4#schlxbq5w59te*)#2tkj3__18if2#g=^hm1te8ho'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'coreschema',
     'corsheaders',
     'rest_framework.authtoken',
+    'social_django',
 ]
 
 REST_FRAMEWORK = {
@@ -67,6 +68,10 @@ REST_FRAMEWORK = {
 
 AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
+    'social_core.backends.weibo.WeiboOAuth2',
+    'social_core.backends.weixin.WeixinOAuth2',
+    'social_core.backends.qq.QQOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 import datetime
@@ -110,6 +115,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 第三方登录
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect'
             ],
         },
     },
@@ -120,7 +128,6 @@ WSGI_APPLICATION = 'shop_online.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -173,3 +180,12 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/si_2048.txt')
+ali_pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/alipay_key_2048.txt')
+
+
+# 第三方登录
+SOCIAL_AUTH_WEIBO_KEY = '3252130343'
+SOCIAL_AUTH_WEIBO_SECRET = '49b5343367205f1638c0fe340d28eba6'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/quitback/weibo/'
